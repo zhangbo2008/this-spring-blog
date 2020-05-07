@@ -49,7 +49,7 @@ void char_string_size() {
 }
 
 int main() {
-    char_st();
+    char_string_copy();
     char_string_cat();
     char_string_size();
     return 0;
