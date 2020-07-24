@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-07-14 12:04:55
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-07-14 14:00:23
+ * @LastEditTime: 2020-07-14 14:29:30
 --> 
 ## 前端该了解的libuv  
 
@@ -87,7 +87,19 @@ gcc参数-I代表静态库的位置，-L代表头文件位置，-l代表库的�
 ```  
 
 -l后面为什么是uv？  
-libuv的文件名是libuv.a。前缀lib和后缀.a是标准的，uv是基本名称，GCC 会在-l选项后紧跟着的基本名称的基础上自动添加这些前缀、后缀，本例中，基本名称为uv。  
+libuv的文件名是libuv.a。前缀lib和后缀.a是标准的，uv是基本名称，GCC 会在-l选项后紧跟着的基本名称的基础上自动添加这些前缀、后缀，本例中，基本名称为uv。 
+
+如何解决make: Nothing to be done for `all' 的方法  
+
+那就要看makefile的规则啦。makefile的规则是所想产生的文件需要依赖很多 .o文件。若文件没有改动，.o文件也没有改动，则Linux认为，我不需要对所有的文件做任何事情。如果想让他重新编译，先执行make clean即可
+
+
+### 总结  
+
+- 介绍了libuv用图
+- 介绍了libuv编译方式以及使用
+- 介绍了gcc编译基本过程
+- 后面会讲解libuv实际使用如果能力够会分析一些源码
 
 ### 参考  
 
