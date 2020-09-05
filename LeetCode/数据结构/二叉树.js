@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-09-02 12:28:55
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-09-02 16:15:53
+ * @LastEditTime: 2020-09-06 02:22:43
  */
 // 二叉树遍历: 前序，中序，后续  
 // 代码实现包括：递归，非递归实现前中后序遍历
@@ -57,4 +57,70 @@ function preOrder2(root) {
     }
 }
 // preOrder(root);
-preOrder2(root);
+// preOrder2(root);
+
+// 中序遍历 递归 3 1 4 0 5 2 6
+function middleOrder(root) {
+    if (!root) return;
+    middleOrder(root.left);
+    console.log(root.value);
+    middleOrder(root.right);
+}
+
+// 中序遍历 非递归 3 1 0 5 2 6
+function middleOrder2(root) {
+    const stack = [];
+    stack.push(root);
+    while(stack.length > 0) {
+        const item = stack[stack.length - 1];
+        const right = item.right;
+        const left = item.left;
+        if (left && !left.look) {
+            left.look = true;
+            stack.push(left);
+        } else {
+            stack.pop();
+            console.log(item.value);
+            right && stack.push(right);
+        }
+    }
+}
+
+// middleOrder(root);
+// middleOrder2(root);
+
+// 后序遍历 递归 3 4 1 5 6 2 0
+function afterOrder(root) {
+    if (!root) return;
+    afterOrder(root.left);
+    afterOrder(root.right);
+    console.log(root.value);
+}
+
+// 后序遍历 非递归 3 4 1 5 6 2 0
+function afterOrder2(root) {
+    const stack = [];
+    stack.push(root);
+    while(stack.length > 0) {
+        const item = stack[stack.length - 1];
+        // console.log(item.value);
+        const left = item.left;
+        const right = item.right;
+        // console.log(left.value, right.value);
+        if (left && !left.look) {
+            left.look = true;
+            stack.push(left);
+        } else if (right && !right.look) {
+            right.look = true;
+            stack.push(right);
+        } else if ((!left && !right) || (left && left.look && right && right.look)) {
+            stack.pop();
+            console.log(item.value);
+        } 
+        // console.log(stack);
+        // break;
+    }
+}
+
+// afterOrder(root);
+afterOrder2(root);
