@@ -3,10 +3,11 @@
  * @Company: kaochong
  * @Date: 2020-09-02 12:28:55
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-09-06 02:22:43
+ * @LastEditTime: 2020-09-08 23:31:19
  */
 // 二叉树遍历: 前序，中序，后续  
 // 代码实现包括：递归，非递归实现前中后序遍历
+
 // 二叉树结构:  
 const root = {
     value: '0',
@@ -123,4 +124,108 @@ function afterOrder2(root) {
 }
 
 // afterOrder(root);
-afterOrder2(root);
+// afterOrder2(root);
+
+
+// 广度度优先搜索 BFS
+function BFS(root) {
+    const stack = [];
+    stack.push(root);
+    while(stack.length > 0) {
+        const item = stack.shift();
+        const left = item.left;
+        const right = item.right;
+        console.log(item.value);
+        left && stack.push(left);
+        right && stack.push(right); 
+    }
+}
+
+// BFS(root);
+
+// 深度优先搜索 DFS
+function DFS(root) {
+    const stack = [];
+    stack.push(root);
+    while(stack.length > 0) {
+        const item = stack[stack.length - 1];
+        const left = item.left;
+        const right = item.right;
+        if (!item.hasprint) {
+            console.log(item.value);
+           item.hasprint = true;
+        }
+        if (left && !left.look) {
+            left.look = true;
+            stack.push(left);
+        } else if (right && !right.look) {
+            right.look = true;
+            stack.push(right);
+        } else if ((!left && !right) || (left.look && right.look)) {
+            stack.pop();
+        }
+    }
+}
+
+// DFS(root);
+
+// 分治应用  
+// 理论：先处理局部在处理整体
+// 模板：（递归）处理A，处理B....合并结果  
+// 归并排序 
+const arr = [2,4,1,8,5,9,0];
+
+// 冒泡排序
+function maopao(list) {
+    for (let i = 0; i < list.length; i += 1) {
+        for (let j = i + 1; j < (list.length); j += 1) {
+            let temp = 0;
+            if (list[i] >= list[j]) {
+                temp = list[j];
+                list[j] = list[i];
+                list[i] = temp;
+            }
+        }
+    }
+}
+
+// maopao(arr);
+// console.log(arr);
+
+// 归并排序
+
+function sortLRRes(left, right) {
+    const max = Math.max(left.length, right.length);
+    let res = [];
+    let i = 0, j = 0;
+    for (;i < max && j < max;) {
+        if (left[i] >= right[j]) {
+            res.push(left[i]);
+            i += 1;
+        } else {
+            res.push(right[j]);
+            j += 1;
+        }
+    }
+
+    if (left.length === max) {
+        res = res.concat(left.slice(i, left.length));
+    }
+    if (right.length === max) {
+        res = res.concat(right.slice(j, right.length));
+    }
+    return res;
+ }
+
+function mergeSort(list) {
+    if (list.length <= 1) return [list[0]];
+    const mid = parseInt(list.length / 2, 10);
+    console.log(' mid:', mid);
+    const leftRes = mergeSort(list.slice(0, mid));
+    const rightRes = mergeSort(list.slice(mid, list.length));
+    const res = sortLRRes(leftRes, rightRes);
+    return res;
+}
+// const res = mergeSort(arr);
+// console.log(res);
+
