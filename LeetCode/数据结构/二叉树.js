@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-09-02 12:28:55
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-09-08 23:31:19
+ * @LastEditTime: 2020-09-11 13:23:42
  */
 // 二叉树遍历: 前序，中序，后续  
 // 代码实现包括：递归，非递归实现前中后序遍历
@@ -229,3 +229,31 @@ function mergeSort(list) {
 // const res = mergeSort(arr);
 // console.log(res);
 
+// 反转
+var x = [1,2,3,4];
+function reverse(x) {
+    for (let i = 0; i < x.length / 2; i += 1) {
+        let temp = x[i];
+        x[i] = x[x.length - i - 1];
+        x[x.length - i - 1] = temp;
+    }
+    return x;
+}
+// console.log(reverse(x));
+// 数组去重
+var y = [1,2,2,3,4,4,5];
+
+function deleteDul(z) {
+    const map = new Map();
+    const len = z.length
+    for (let i = 0; i < len; i += 1) {
+        const item = z.shift();
+        if (!map.get(item)) {
+            z.push(item);
+            map.set(item, true);
+        }
+    }
+    return z;
+}
+
+console.log(deleteDul(y));
