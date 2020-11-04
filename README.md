@@ -1,10 +1,3 @@
-<!--
- * @Author: xiuquanxu
- * @Company: kaochong
- * @Date: 2020-03-08 13:36:46
- * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-09-28 11:41:43
--->
 # xuxiuquan个人简历
 
 ## 个人简介  
