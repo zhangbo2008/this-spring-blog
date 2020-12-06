@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-09-02 12:28:55
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-09-11 13:23:42
+ * @LastEditTime: 2020-12-02 14:53:37
  */
 // 二叉树遍历: 前序，中序，后续  
 // 代码实现包括：递归，非递归实现前中后序遍历
@@ -13,9 +13,9 @@ const root = {
     value: '0',
     left: {
         value: '1',
-        left: {
-            value: '3'
-        },
+        // left: {
+        //     value: '3'
+        // },
         right: {
             value: '4'
         }
@@ -140,7 +140,15 @@ function BFS(root) {
         right && stack.push(right); 
     }
 }
+// DFS实现：
 
+// 数据结构：栈
+
+// 父节点入栈，父节点出栈，先右子节点入栈，后左子节点入栈。递归遍历全部节点即可
+
+// BFS实现：
+
+// 数据结构：队列
 // BFS(root);
 
 // 深度优先搜索 DFS
@@ -167,7 +175,7 @@ function DFS(root) {
     }
 }
 
-// DFS(root);
+DFS(root);
 
 // 分治应用  
 // 理论：先处理局部在处理整体
@@ -256,4 +264,4 @@ function deleteDul(z) {
     return z;
 }
 
-console.log(deleteDul(y));
+// console.log(deleteDul(y));
