@@ -180,3 +180,8 @@ Description: Not Modified
 ```  
 
 ## http和https  
+https：对称加密还是非对称加密  
+
+## 输入URL都发生了什么  
+
+## 
