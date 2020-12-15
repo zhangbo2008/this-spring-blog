@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-11 16:42:49
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-11 17:43:58
+ * @LastEditTime: 2020-12-12 14:19:22
 */
 // A, B, C
 
@@ -32,3 +32,15 @@ var t1 = a.next(0);
 
 var t2 = a.next(t1.value);
 var t3 = a.next(t2.value);
+
+function* req() {
+    var res = yield fetch('https://api.github.com/users/github');
+    console.log(` 获取到blog地址：${res.blog}`);
+    return true;
+}
+
+const rr = req();
+const promiseFetch = rr.next();
+promiseFetch.value.then((res) => res.json()).then((res) => {
+    rr.next(res);
+});

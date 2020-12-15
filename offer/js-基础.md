@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-08 15:38:40
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-12 11:47:02
+ * @LastEditTime: 2020-12-16 01:17:32
 -->
 ## 基本类型  
 最新的 ECMAScript 标准定义了 8 种数据类型:
@@ -899,4 +899,242 @@ c.next(); // tick
 - 发布订阅
 - Promise  
 - Generator  
+
+#### callback && promise && await-async && generator  
+
+**详细见FE下5**  
+
+#### Generator函数关键特点  
+
+1. 通过next(....)可以向生成器中注入参数  
+2. 通过yield xxx;可以向外部返回参数(value: xxx, done: false)  
+3. 出错处理（外部抛出错误，内部可以处理）  
+
+```
+<!-- 出错处理例子 -->
+function* gen(x){
+  try {
+    var y = yield x + 2;
+  } catch (e){
+    console.log(e);
+  }
+  return y;
+}
+
+var g = gen(1);
+g.next();
+g.throw('出错了');  
+
+Generator 函数体外，使用指针对象的throw方法抛出的错误，可以被函数体内的try...catch代码块捕获。这意味着，出错的代码与处理错误的代码，实现了时间和空间上的分离，这对于异步编程无疑是很重要的。
+```  
+
+#### 真实的异步封装  
+
+```
+function* req() {
+    var res = yield fetch('https://api.github.com/users/github');
+    console.log(` 获取到blog地址：${res.blog}`);
+    return true;
+}
+
+const rr = req();
+const promiseFetch = rr.next();
+promiseFetch.value.then((res) => res.json()).then((res) => {
+    rr.next(res);
+});
+
+上面的例子在Generator中语义上非常贴近同步执行，如果去掉yield那么就是一个程序同步执行的过程。  
+执行上首先通过yield拿到返回的promise然后在外面处理完res之后通过next函数返还给req，把数据交个req处理。
+```  
+
+### async  
+
+async是generator的语法糖
+
+```
+<!-- await实现休眠 -->  
+function Sleep(time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+}
+
+async function test() {
+    for(let i = 0; i < 5; i += 1) {
+        await Sleep(i * 1000);
+        console.log(i);
+    }
+}
+```  
+
+### class  
+
+#### 继承
+es5:  
+
+
+es6:  
+
+#### Object.getPrototypeOf()   
+
+可以使用这个方法判断，一个类是否继承了另一个类。  
+
+#### super  
+
+第一种：super作为函数调用时，代表父类的构造函数
+
+第二种情况：super作为对象时，在普通方法中，指向父类的原型对象；在静态方法中，指向父类。   
+```
+class A {
+  constructor() {
+    this.p = 2;
+  }
+}
+
+class B extends A {
+  get m() {
+    return super.p;
+  }
+}
+
+let b = new B();
+b.m // undefined
+```
+
+第三种：ES6 规定，在子类普通方法中通过super调用父类的方法时，方法内部的this指向当前的子类实例。
+
+```
+class A {
+  constructor() {
+    this.x = 1;
+  }
+  print() {
+    console.log(this.x);
+  }
+}
+
+class B extends A {
+  constructor() {
+    super();
+    this.x = 2;
+  }
+  m() {
+    super.print();
+  }
+}
+
+let b = new B();
+b.m() // 2
+```  
+
+#### 原生构造函数  
+
+- Boolean()
+- Number()
+- String()
+- Array()
+- Date()
+- Function()
+- RegExp()
+- Error()
+- Object()  
+
+以前，这些原生构造函数是无法继承的，比如，不能自己定义一个Array的子类。
+
+ES6 可以自定义原生数据结构（比如Array、String等）的子类，这是 ES5 无法做到的。  
+
+```
+class VersionedArray extends Array {
+  constructor() {
+    super();
+    this.history = [[]];
+  }
+  commit() {
+    this.history.push(this.slice());
+  }
+  revert() {
+    this.splice(0, this.length, ...this.history[this.history.length - 1]);
+  }
+}
+
+var x = new VersionedArray();
+
+x.push(1);
+x.push(2);
+x // [1, 2]
+x.history // [[]]
+
+x.commit();
+x.history // [[], [1, 2]]
+
+x.push(3);
+x // [1, 2, 3]
+x.history // [[], [1, 2]]
+
+x.revert();
+x // [1, 2]
+
+```  
+
+#### Mixin 模式的实现  
+
+Mixin 指的是多个对象合成一个新的对象，新对象具有各个组成成员的接口。它的最简单实现如下。
+
+```
+const a = {
+  a: 'a'
+};
+const b = {
+  b: 'b'
+};
+const c = {...a, ...b}; // {a: 'a', b: 'b'}
+```
+
+下面是一个更完备的实现，将多个类的接口“混入”（mix in）另一个类。  
+
+```
+面是一个更完备的实现，将多个类的接口“混入”（mix in）另一个类。
+
+function mix(...mixins) {
+  class Mix {
+    constructor() {
+      for (let mixin of mixins) {
+        copyProperties(this, new mixin()); // 拷贝实例属性
+      }
+    }
+  }
+
+  for (let mixin of mixins) {
+    copyProperties(Mix, mixin); // 拷贝静态属性
+    copyProperties(Mix.prototype, mixin.prototype); // 拷贝原型属性
+  }
+
+  return Mix;
+}
+
+function copyProperties(target, source) {
+  for (let key of Reflect.ownKeys(source)) {
+    if ( key !== 'constructor'
+      && key !== 'prototype'
+      && key !== 'name'
+    ) {
+      let desc = Object.getOwnPropertyDescriptor(source, key);
+      Object.defineProperty(target, key, desc);
+    }
+  }
+}
+
+<!-- 使用 -->
+class DistributedEdit extends mix(Loggable, Serializable) {
+  // ...
+}
+```  
+
+### AMD、CommonJS和ES6 Module(import,export)  
+
+
+### 一个js对象完整的原型链  
+<img  src="./prototype.png"/>  
 
