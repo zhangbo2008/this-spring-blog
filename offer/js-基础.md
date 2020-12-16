@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-08 15:38:40
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-16 01:17:32
+ * @LastEditTime: 2020-12-16 21:08:03
 -->
 ## 基本类型  
 最新的 ECMAScript 标准定义了 8 种数据类型:
@@ -637,6 +637,13 @@ p
 .catch(console.error);
 ```  
 
+#### Promise.then(() => , () => {}).catch 第二个then和catch区别  
+
+1. 当错误在promise中发生时，会就近原则，如果第二个then和catch同时存在那么就只有第二个then执行。如果只有catch存在那么就只执行cath  
+2. 当错误在resolve中发生时异常是，那么第二个then就不会接收到错误，而cath却可以。所以我们建议使用catch，一方面它捕获错误最全面，另外一个方面更接近try catch写法  
+
+第二个then方法就是reject执行时的回调。
+
 #### Promise.any([p1,p2,p3]) Es2021  
 
 其中只要有一个变成fulfilled，Promise.any()返回的 Promise 对象就变成fulfilled。如果所有三个操作都变成rejected，那么await命令就会抛出错误。  
@@ -671,7 +678,100 @@ Promise.any([resolved, rejected, alsoRejected]).then(function (result) {
 Promise.any([rejected, alsoRejected]).catch(function (results) {
   console.log(results); // [-1, Infinity]
 });
-```  
+``` 
+
+面试题：  
+```
+题目一：  
+const promise = new Promise((resolve, reject) => {
+    console.log(1)
+    resolve()
+    console.log(2)
+})
+promise.then(() => {
+    console.log(3)
+})
+console.log(4)
+
+题目二： 
+var promise = new Promise(function(resolve, reject){
+  setTimeout(function() {
+    resolve(1);
+  }, 3000)
+})
+// 1
+promise.then(() => {
+  return Promise.resolve(2);
+}).then((n) => {
+  console.log(n)
+});
+
+// 2
+promise.then(() => {
+  return 2
+}).then((n) => {
+  console.log(n)
+});
+
+// 3
+promise.then(2).then((n) => {
+  console.log(n)
+});
+
+题目三：
+let a;
+const b = new Promise((resolve, reject) => {
+  console.log('promise1');
+  resolve();
+}).then(() => {
+  console.log('promise2');
+}).then(() => {
+  console.log('promise3');
+}).then(() => {
+  console.log('promise4');
+});
+
+a = new Promise(async (resolve, reject) => {
+  console.log(a);
+  await b;
+  console.log(a);
+  console.log('after1');
+  await a
+  resolve(true);
+  console.log('after2');
+});
+
+console.log('end');
+
+题目四：
+const promise = new Promise((resolve, reject) => {
+  resolve('success1');
+  reject('error');
+  resolve('success2');
+});
+
+promise
+  .then((res) => {
+    console.log('then: ', res);
+  })
+  .catch((err) => {
+    console.log('catch: ', err);
+  });
+
+题目五：
+Promise.resolve()
+  .then(() => {
+    return new Error('error!!!')
+  })
+  .then((res) => {
+    console.log('then: ', res)
+  })
+  .catch((err) => {
+    console.log('catch: ', err)
+  })
+题目六：
+手写promise
+```
 
 ### Iterator和for...of循环   
 
@@ -1137,4 +1237,104 @@ class DistributedEdit extends mix(Loggable, Serializable) {
 
 ### 一个js对象完整的原型链  
 <img  src="./prototype.png"/>  
+<img src="./prototype.webp"/>  
 
+
+面试题:  
+
+```
+题目一：
+Function.prototype.a = () => {
+  console.log(1);
+}
+Object.prototype.b = () => {
+  console.log(2);
+}
+function A() {}
+const a = new A();
+
+a.a();
+a.b();
+A.a();
+A.b();  
+
+题目二：
+function A() {
+}
+
+A.prototype.n = 0;
+
+A.prototype.add = function () {
+  this.n += 1;
+}
+
+a = new A();
+b = new A();
+a.add();
+console.log(b.add())
+
+题目三：
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.eat = function() {
+    console.log(age + "岁的" + name + "在吃饭。");
+  }
+}
+
+Person.run = function () {}
+Person.prototype.walk = function () {}
+
+let p1 = new Person("jsliang", 24);
+let p2 = new Person("jsliang", 24);
+
+console.log(p1.eat === p2.eat); // false
+console.log(p1.run === p2.run); // true
+console.log(p1.walk === p2.walk); // true
+
+题目四：
+function A() {
+  this.test = 1
+}
+
+var a = new A();
+a.test
+
+a = new A;
+a.test
+
+a = A()
+a.test
+
+A.test
+
+题目五：
+function A() {}
+function B(a) {
+    this.a = a;
+}
+function C(a) {
+    if (a) {
+        this.a = a;
+    }
+}
+A.prototype.a = 1;
+B.prototype.a = 1;
+C.prototype.a = 1;
+
+console.log(new A().a); // 1
+console.log(new B().a); // undefined
+console.log(new C(2).a); // 2
+
+题目六：
+function foo() {
+    this.some = '222'
+    let ccc = 'ccc'
+    foo.obkoro1 = 'obkoro1'
+    foo.prototype.a = 'aaa'
+}
+foo.koro = '扣肉'
+foo.prototype.test = 'test'
+let foo1 = new foo() 
+foo.prototype.test = 'test2'
+```
