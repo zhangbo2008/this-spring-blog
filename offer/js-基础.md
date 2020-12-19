@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-08 15:38:40
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-16 21:08:03
+ * @LastEditTime: 2020-12-17 20:25:54
 -->
 ## 基本类型  
 最新的 ECMAScript 标准定义了 8 种数据类型:
@@ -1337,4 +1337,17 @@ foo.koro = '扣肉'
 foo.prototype.test = 'test'
 let foo1 = new foo() 
 foo.prototype.test = 'test2'
-```
+```  
+
+### defer和async  
+
+defer和async共同点是普通脚本会被并行请求，并尽快解析和执行，不会阻塞下面的解析。  
+不同点：  
+async：遇到就开始下载，下载完后就执行，跟dom执行顺序没有关系。如果多个脚本不区分脚本写的先后顺序。
+defer：遇到就开始下载，将在文档完成解析后，触发 DOMContentLoaded 事件前执行。如果有多个脚本，那么写的什么顺序就会按照什么顺序执行，无论下载快慢。  
+
+<script type="module"></script> // 表现和defer一样同样不会阻塞dom解析  
+
+淘宝首页：全是async  
+defer：defer 用于需要整个 DOM 的脚本，和/或脚本的相对执行顺序很重要的时候  
+
