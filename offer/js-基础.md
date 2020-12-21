@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-08 15:38:40
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-17 20:25:54
+ * @LastEditTime: 2020-12-20 13:05:33
 -->
 ## 基本类型  
 最新的 ECMAScript 标准定义了 8 种数据类型:
@@ -12,12 +12,12 @@
 object  
 
 NaN是nubmer类型  
-NaN等于NaN
+NaN不等于NaN  
 bigint:  
 使用：  
 - 数字后面加n，例如 2n
 - 构造函数 BigInt(100)
-由于js采用的IEEE-753存储标准，也就是双精度64位，对应其他语言的float类型，所以导致他的精度范围在-(2^53 - 1) ~ (2^53 - 1)，这就导致超过这个值得整数进行运算就会出错，简单例子：  
+由于js采用的IEEE-754存储标准，也就是双精度64位，小数存储的时候有效位只有52位，对应其他语言的float类型，所以导致他的精度范围在-(2^53 - 1) ~ (2^53 - 1)，这就导致超过这个值得整数进行运算就会出错，简单例子：  
 
 ```
 99999999999999999 + 100 = 100000000000002000 // 浏览器会输出错误的数字  
@@ -33,6 +33,8 @@ Number.MAX_SAFE_INTEGER：js可以操作最大安全int
 Number.Min_SAFE_INTEGER：js可操作最小安全int  
 
 Symbol  
+定义：ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值  
+解决什么问题：当我们用第三方模块是如果想要向里面加入一个新属性很有可能导致key冲突，这个时候Symbol就可以解决这个问题。  
 使用：Symbol([description])   
 类型判断：typeof Symbol = symbol  
 
@@ -53,16 +55,39 @@ obj['x'] // 123
 ```    
 
 作为属性名的时候遍历不会出现在：  
-for...in、for...of循环中，也不会被Object.keys()、Object.getOwnPropertyNames()、JSON.stringify()返回。
+for...in、for...of循环中，也不会被Object.keys()、Object.getOwnPropertyNames()、JSON.stringify()返回。  
+
+## for..of和for..in  
+对于对象：  
+```
+var x = {name: 'xxq', age:'12'}
+for (var k of x) {
+  console.log(k);
+}
+<!-- VM340:1 Uncaught TypeError: x is not iterable -->  
+
+for (var kk in x) {
+  console.log(kk);
+}
+<!-- name, age-->
+```  
+
+for..in是遍历自身和继承的可枚举属性，不包括枚举和Symbol
+key。被for..of遍历的对象需要有Symbol.Iterator接口。  
+```
+x[Symbol.iterator] = function() {return {next: function() {return {done: false, value:1}}}}  
+
+<!-- 这种情况下在对x进行for..of遍历时候就不会报错且一直输出1 -->
+```
 
 ## 类型检测  
 
-### 1. typeof 输入一个原始数据反馈一个字符串 : 可以检测出es5：undefined，number，boolean，string，function，object，es6：symbol，bigint   
+### 1. typeof 输入一个原始数据反回一个字符串 : 可以检测出es5：undefined，number，boolean，string，function，object，es6：symbol，bigint   
 
 注：  
 typeof null -> "object"  
-typeof Array -> "object"
-typeof NaN -> "number"
+typeof Array -> "object"  
+typeof NaN -> "number"  
 
 eg:  
 
@@ -79,7 +104,21 @@ eg:
 new Object() instanceof Object 返回true
 ```  
 
+手写instanceof  
+```
+function MyInstance(left, right) {
+  while(left) {
+    if (left.__proto__ === right.prototype) {
+      return true;
+    }
+    left = left.__proto__;
+  }
+  return false;
+}
+```
+
 ### 3. Object.prototype.toString.apply: 返回字符串  
+检测类型比较全面  
 eg:  
 ```
 Object.prototype.toString.apply(NaN)
@@ -105,11 +144,6 @@ Object.prototype.toString.apply(() => {});
 Object.prototype.toString.apply([]);
 "[object Array]"
 ```  
-
-
-
-
-
 
 ## ES6相关  
 
@@ -138,6 +172,7 @@ log('xxq');
 ES6引入了rest参数（形式为...变量名），用于获取函数的多余参数，这样就不需要使用arguments对象了。  
 ```
 function add(...values) {
+    console.log(values); // [1,2,3]
     let sum = 0;
     for (var val of values) {
         sum += val;
@@ -407,6 +442,8 @@ const obj = {
 
 ####  2. 可枚举性  
 对象的每个属性都有一个描述对象（Descriptor），用来控制该属性的行为。Object.getOwnPropertyDescriptor方法可以获取该属性的描述对象。  
+
+注：注意区分property和prototye。property是属性，prototype是原型链。  
 
 ```
 let obj = { foo: 123 };
