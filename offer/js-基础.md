@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-08 15:38:40
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-20 13:05:33
+ * @LastEditTime: 2020-12-23 17:36:29
 -->
 ## 基本类型  
 最新的 ECMAScript 标准定义了 8 种数据类型:
@@ -343,6 +343,9 @@ JavaScript 内部，整数和浮点数采用的是同样的储存方法，所以
 #### ES6 引入BigInt  
 
 ### 数组拓展  
+
+#### 方法  
+map、filter、some、every、reduce、reduceRight
 
 #### 1. 扩展运算符  
 它好比 rest 参数的逆运算，将一个数组转为用逗号分隔的参数序列  
