@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-24 01:18:16
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-24 13:27:42
+ * @LastEditTime: 2020-12-25 14:12:05
 */
 // String常用Api  
 // 1. charAt(index)
@@ -45,3 +45,13 @@ function Rename(str) {
     return newRes;
 }
 console.log(Rename('HelloWorld'));
+
+// 字符串转数组  
+var test = '123';
+var arr1 = test.split('');
+var arr2 = Array.from(test);
+var arr3 = [...test];
+console.log(arr1, arr2, arr3);
+// 数组转字符串
+var str1 = arr1.join('');
+console.log(str1);
