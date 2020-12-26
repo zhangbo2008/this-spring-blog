@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-08 15:38:40
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-23 17:36:29
+ * @LastEditTime: 2020-12-26 13:29:22
 -->
 ## 基本类型  
 最新的 ECMAScript 标准定义了 8 种数据类型:
@@ -1391,3 +1391,15 @@ defer：遇到就开始下载，将在文档完成解析后，触发 DOMContentL
 淘宝首页：全是async  
 defer：defer 用于需要整个 DOM 的脚本，和/或脚本的相对执行顺序很重要的时候  
 
+### 几种框架常用API  
+for...in  
+
+
+for...of  
+
+
+obj.hasOwnProperty(prop)  
+
+Object.getOwnPropertyDescriptor(target, prop);  
+
+Object.getOwnPropertyNames(property);
