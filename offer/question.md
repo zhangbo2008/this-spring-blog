@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-06 20:12:00
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-08 13:15:04
+ * @LastEditTime: 2020-12-28 21:41:22
 -->
 
 ## XSS和CSRF  
@@ -180,8 +180,38 @@ Description: Not Modified
 ```  
 
 ## http和https  
-https：对称加密还是非对称加密  
+### 概念 
+SSL和TSL  
+TLS 1.0 = SSL 3.1  
+TLS 1.1 = SSL 3.2  
+TLS 1.2 = SSL 3.3  
+
+### 对称加密和非对称加密  
+
+对称加密：只有一把秘钥A用秘钥加密解密，B也用秘钥加密解密。  
+非对称加密：有两把秘钥分别叫做公钥和私钥。A使用公钥加密，B使用私钥解密。任何人都可以拿到公钥，私钥是不可以暴露的，拿到私钥的人就可以进行解密了。  
+
+对称加密和解密速度要比非对称加密加解密快很多。对称加密一般密匙位数越多加密程度越高，否则程度越低。  
+
+```
+面试题1：   
+说说http和https区别  
+1. http是明文传输，https是加密传输
+2. http默认是80端口，https是443端口
+3. https比http多了一个TSL认证
+4. https需要ca认证  
+
+面试题2：  
+说说https原理  
+1. 首先web端申请跟服务端建立连接  
+2. 浏览器发送对称加密套件和非对称加密套件以及随机生成的client-random。  
+3. 服务端保存client-random，同时选一个客户端的非对称解密套件和对称机密套件（保证双方都有该算法）以及随机生成的service-random以及数字证书(含有公钥)发送给浏览器  
+4. 浏览器拿到数字证书后首先判断服务端是否合法，如果合法通过client-random和service-random计算生成pre-master然后通过非对称加密的算法进行加密，然后传递给服务器
+5. 服务器拿到加密后的pre-master利用私钥解密得到pre-master（因为服务端有client-random、service-random所以能判断出是否正确），正确后返回确认信息。
+6. 最后两端利用client-random、service-random和pre-master生成对称加密秘钥进行传输数据的加解密。
+```
+
+<a href="https://blog.poetries.top/browser-working-principle/guide/part6/lesson36.html#%E7%AC%AC%E4%BA%8C%E7%89%88%EF%BC%9A%E4%BD%BF%E7%94%A8%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86">详解</a>
 
 ## 输入URL都发生了什么  
 
-## 
