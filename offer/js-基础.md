@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-08 15:38:40
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-26 13:29:22
+ * @LastEditTime: 2020-12-29 13:23:03
 -->
 ## 基本类型  
 最新的 ECMAScript 标准定义了 8 种数据类型:
@@ -84,18 +84,17 @@ x[Symbol.iterator] = function() {return {next: function() {return {done: false, 
 
 ### 1. typeof 输入一个原始数据反回一个字符串 : 可以检测出es5：undefined，number，boolean，string，function，object，es6：symbol，bigint   
 
+eg:  
+
+```
 注：  
 typeof null -> "object"  
 typeof Array -> "object"  
 typeof NaN -> "number"  
 
-eg:  
-
-```
-
 ```  
 
-### 2. instanceof  返回值是boolean。使用 obj instanceof Object。可以检测出左侧的obj的prototype是否是右侧的Object。  
+### 2. instanceof  返回值是boolean。检测左侧的原型链是否在右侧的原型上 
 
 eg:  
 
@@ -123,7 +122,7 @@ eg:
 ```
 Object.prototype.toString.apply(NaN)
 "[object Number]"
-Object.prototype.toString.apply('123');
+Object.prototype.toString.apply(123);
 "[object Number]"
 Object.prototype.toString.apply('123');
 "[object String]"
@@ -634,6 +633,21 @@ Reflect.has(Object, 'assign') // true
 
 注：面试题（手写promise，promise和setTimeout等执行顺序）
 
+Promise  
+
+```
+原型上的方法：  
+let p = new Promise();
+p.then(),p.catch(),p.finally()  
+
+构造函数上的方法：  
+Promise.all([p1,p2...]);  
+Promise.race([p1,p2...]);
+Promise.any([p1,p2...]);
+Promise.reject();
+Promise.resolve();
+```
+
 一种异步编程解决方案  
 特点：
 1. 三种状态pending(进行中)，fulfilled(已成功，rejected(以失败)。  
@@ -677,7 +691,7 @@ p
 .catch(console.error);
 ```  
 
-#### Promise.then(() => , () => {}).catch 第二个then和catch区别  
+#### (new Promise()).then(() => , () => {}).catch 第二个then和catch区别  
 
 1. 当错误在promise中发生时，会就近原则，如果第二个then和catch同时存在那么就只有第二个then执行。如果只有catch存在那么就只执行cath  
 2. 当错误在resolve中发生时异常是，那么第二个then就不会接收到错误，而cath却可以。所以我们建议使用catch，一方面它捕获错误最全面，另外一个方面更接近try catch写法  
@@ -719,6 +733,15 @@ Promise.any([rejected, alsoRejected]).catch(function (results) {
   console.log(results); // [-1, Infinity]
 });
 ``` 
+
+对于Promise.resolve(x)和Promise.reject(x)如果x是一个值那么会被包装成promise返回回去，如果是一个promise则直接返回。  
+```
+Promise.resolve(1).then((x) => {
+  console.log(x);//1
+})
+<!-- Promise.resolve() // Promise {<fulfilled>: undefined}
+ -->
+```
 
 面试题：  
 ```
