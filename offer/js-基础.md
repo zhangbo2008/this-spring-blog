@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-08 15:38:40
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-29 13:23:03
+ * @LastEditTime: 2021-01-04 21:29:37
 -->
 ## 基本类型  
 最新的 ECMAScript 标准定义了 8 种数据类型:
@@ -1298,7 +1298,16 @@ class DistributedEdit extends mix(Loggable, Serializable) {
 ### AMD、CommonJS和ES6 Module(import,export)  
 
 
-### 一个js对象完整的原型链  
+### 一个js对象完整的原型链   
+
+
+function Person() {
+
+}
+var person = new Person();
+console.log(person.constructor === Person); // true  
+这里的personr.constructor如果访问不到，回去原型上找
+
 <img  src="./prototype.png"/>  
 <img src="./prototype.webp"/>  
 
