@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-29 11:48:16
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2021-01-07 16:28:26
+ * @LastEditTime: 2021-01-11 11:16:49
 */
 // https://imweb.io/topic/5bbc264b6477d81e668cc930
 const status = {
@@ -173,3 +173,54 @@ p.then((res) => {
 }).then(res => {
     console.log('success2:', res);
 });
+
+
+
+class MyPromise {
+    constructor(exetor) {
+        this.status = status.pedding;
+        this.value = undefined;
+        this.successCB = [];
+        this.errorCB = [];
+        const resolve = () => {
+            if (this.status === status.pedding) {
+                for (let i = 0, len = this.successCB.length; i < len; i += 1) {
+                    this.successCB.shift()(this.value);
+                }
+            }
+        }
+        const reject = () => {
+            if (this.status === status.pedding) {
+                for (let i = 0, len = this.successCB.length; i < len; i += 1) {
+                    this.errorCB.shift()(this.value);
+                }
+            }
+        }
+        exetor(resolve, reject);
+    }
+
+    then(fulfilled, reject) {
+        return new MyPromise((resolve, reject) => {
+            if (this.status === status.pedding) {
+                this.successCB.push(() => {
+                    let 
+                });
+            }
+            if (this.status === status.fulfilled) {
+
+            }
+            if (this.status === status.resolve) {
+
+            }
+        });
+    }
+}
+
+const p = new MPromise((ok, no) => {
+
+});
+p.then((res) => {
+
+},(e) => {
+
+})

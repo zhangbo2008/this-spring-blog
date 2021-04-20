@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-15 20:15:22
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-16 16:32:44
+ * @LastEditTime: 2021-04-14 19:46:06
 -->
 ### positioin  
 
@@ -160,3 +160,5 @@ direction如果是xdeg：  是基于自颜色自上而下排序后然后进行�
 
 direction如果是to right...,就是按照那个方向进行排列颜色。  
 <a href="./">demo</a>
+
+### 盒子模型

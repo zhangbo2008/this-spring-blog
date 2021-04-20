@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-12-06 20:12:00
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-28 21:41:22
+ * @LastEditTime: 2021-04-10 23:33:14
 -->
 
 ## XSS和CSRF  
@@ -153,7 +153,7 @@ http3
 header + 空行 + body  
 
 req:  
-header(请求行 + 请求头) + body  
+header(请求行 + 换行 + 请求头) + body  
 请求行：方法（get/post）+ URI + http版本  
 
 eg：  
@@ -162,21 +162,23 @@ eg：
 GET /klive/klive-admin/ HTTP/1.1\r\n
 Request Method: GET  
 Request URI: /klive/klive-admin  
-Request Version: HTTP/1.1
+Request Version: HTTP/1.1 // 请求行
+User-Agent: .... // 请求头
+// 这里要空一行 header和body之间要空一行
+name=xxq // body
 ```  
 
 res:  
-header(响应行 + 请求头) + body  
+header(响应行 + 响应头) + body  
 响应行：http版本 + 状态码 + 描述  
 
 eg:  
 
 ```
 HTTP/1.1 304 Not Modified\r\n  
+Cache-Control: no-cache
 
-Request Version: HTTP/1.1  
-Status: 304  
-Description: Not Modified  
+{password:'123'}
 ```  
 
 ## http和https  

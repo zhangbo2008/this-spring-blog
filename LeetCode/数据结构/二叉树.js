@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-09-02 12:28:55
  * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-12-02 14:53:37
+ * @LastEditTime: 2021-04-15 23:07:41
  */
 // 二叉树遍历: 前序，中序，后续  
 // 代码实现包括：递归，非递归实现前中后序遍历
@@ -13,9 +13,9 @@ const root = {
     value: '0',
     left: {
         value: '1',
-        // left: {
-        //     value: '3'
-        // },
+        left: {
+            value: '3'
+        },
         right: {
             value: '4'
         }

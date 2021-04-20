@@ -82,7 +82,10 @@ x[Symbol.iterator] = function() {return {next: function() {return {done: false, 
 
 ## 类型检测  
 
-### 1. typeof 输入一个原始数据反回一个字符串 : 可以检测出es5：undefined，number，boolean，string，function，object，es6：symbol，bigint   
+### 1. typeof 输入一个原始数据反回一个字符串 : 可以检测出es5：undefined，number，boolean，string，function，object，es6：symbol，bigint  
+
+undefined, Null, boolean，number，string，bigint，symbol  
+object  
 
 eg:  
 
