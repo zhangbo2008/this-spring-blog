@@ -8,3 +8,5 @@ https://gitee.com/zhangbo2008/this-spring-blog/tree/master/cmake/demo
 		 "args": ["99"],  为输入的数字.然后点debug.默认F5.即可.
 		 写一个name,
 	打上断点之后点击,build左边的对应的上面设置的name,即可debug
+		然后自己要查看什么变量,在左边watch里面加号一个,然后修改后按回车.
+	可以反复修改查看
