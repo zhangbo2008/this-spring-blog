@@ -1,0 +1,10 @@
+2021-04-22,12点16	
+开整第一个项目:
+https://gitee.com/zhangbo2008/this-spring-blog/tree/master/cmake/demo
+这个项目超级简单,主要是学习cmake和vscode的debug方法:
+
+	build之后. 配置.vscode/laun.json里面 configuration里面program为:
+		"${workspaceFolder}/build/CalculateSqrt",
+		 "args": ["99"],  为输入的数字.然后点debug.默认F5.即可.
+		 写一个name,
+	打上断点之后点击,build左边的对应的上面设置的name,即可debug
